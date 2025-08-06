@@ -7,7 +7,7 @@ url = "http://localhost:8000/copilot/rag-process"
 prompt = "can you give me a financial report for this file here and how i can make money from such an opportunity?"
 
 # Full file path to your local PDF
-file_path = r"C:\Users\MOHAMED YESSINE\Downloads\Formulaire demande de stage  Yosra.pdf"
+file_path = r""
 
 # Send POST request with file and prompt
 with open(file_path, "rb") as f:
