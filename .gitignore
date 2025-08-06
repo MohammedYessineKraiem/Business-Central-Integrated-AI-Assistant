@@ -1,0 +1,36 @@
+# Business Central generated files
+.alpackages/
+.snapshots/
+.vscode/
+.vscode/.alcache/
+.vscode/.altemplates/
+
+# ChatBot-RAGSugg data & cache
+CHATBOT-RAGSugg/rag/.alpackages/
+CHATBOT-RAGSugg/rag/.snapshots/
+CHATBOT-RAGSugg/rag/chroma_db/
+CHATBOT-RAGSugg/rag/exports/
+CHATBOT-RAGSugg/rag/processed_data/simple_qa_dataset.json
+CHATBOT-RAGSugg/rag/processed_data/chatgpt_conversations_dataset.json
+CHATBOT-RAGSugg/rag/processed_data/financial_instructions_dataset.json
+CHATBOT-RAGSugg/rag/processed_data/unified_dataset.json
+CHATBOT-RAGSugg/rag/raw_data/
+CHATBOT-RAGSugg/rag/__pycache__/
+CHATBOT-RAGSugg/rag/raw_data/__pycache__/
+
+# Python bytecode cache
+__pycache__/
+
+# C# build output
+XPilotCopilotAPI/XPilotCopilotAPI/bin/
+XPilotCopilotAPI/XPilotCopilotAPI/obj/
+XPilotCopilotAPI/.vs/
+XPilotCopilotAPI/XPilotCopilotAPI/appsettings*.json
+
+
+# General
+processed_data/
+*.user
+*.suo
+*.DS_Store
+Thumbs.db

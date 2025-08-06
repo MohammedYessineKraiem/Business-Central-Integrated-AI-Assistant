@@ -1,0 +1,32 @@
+{
+  "id": "4b8c4b41-889f-450d-9239-5e96b1964105",
+  "name": "Copilot",
+  "publisher": "Yessine",
+  "version": "1.0.0.1",
+  "brief": "integrated copilot on-premises",
+  "description": "integrates copilot into your on-premises environment, allowing you to use AI capabilities without relying on external services. This app provides a secure and efficient way to enhance your applications with AI features while maintaining control over your data.",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "res/logo.png",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "25.0.0.0",
+  "application": "25.0.0.0",
+  "idRanges": [
+    {
+      "from": 50100,
+      "to": 50149
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "14.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}

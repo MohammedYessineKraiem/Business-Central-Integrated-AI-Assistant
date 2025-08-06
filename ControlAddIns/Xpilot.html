@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="XpilotStyle.css" />
+</head>
+<body>
+  <div id="chat-toggle">💬</div>
+
+  <div id="chat-container">
+    <div id="chat-header">Copilot</div>
+    <div id="chat-messages"></div>
+    <div id="chat-input">
+    <select id="model-select">
+        <option value="gpt-4">GPT-4</option>
+        <option value="mistral">Mistral</option>
+        <option value="local-llm">Local LLM</option>
+    </select>
+    <select id="mode-select">
+        <option value="all">All</option>
+        <option value="ask">Ask</option>
+        <option value="agent">Agent</option>
+    </select>
+
+    <input type="text" id="user-prompt" placeholder="Ask me something..." />
+    <button id="send-btn">Send</button>
+    <button id="logs-btn">📄 Logs</button> <!-- optional -->
+
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+
+  <script src="copilot.js"></script>
+</body>
+</html>

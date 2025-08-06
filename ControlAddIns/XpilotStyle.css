@@ -1,0 +1,587 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin: 0;
+    position: relative;
+}
+
+.container {
+    width: 900px;
+    height: 700px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 400px;
+    min-height: 300px;
+    transition: box-shadow 0.3s ease;
+}
+
+.container.dragging {
+    box-shadow: 0 25px 80px rgba(34, 197, 94, 0.25);
+    transform: translate(-50%, -50%) scale(1.02);
+}
+
+.container.resizing {
+    box-shadow: 0 25px 80px rgba(34, 197, 94, 0.25);
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.5; transform: translateX(-100%); }
+    50% { opacity: 1; transform: translateX(100%); }
+}
+
+.header {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    color: white;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    cursor: move;
+    user-select: none;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.logo h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.model-selector, .mode-selector {
+    position: relative;
+}
+
+.model-selector select, .mode-selector select {
+    appearance: none;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 32px 8px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.model-selector select option, .mode-selector select option {
+    background: #10b981;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    font-weight: 500;
+}
+
+.model-selector select:hover, .mode-selector select:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.model-selector select:focus, .mode-selector select:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.model-selector::after, .mode-selector::after {
+    content: '▼';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: white;
+    pointer-events: none;
+}
+
+.dashboard-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.dashboard-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.chat-window {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.9) 100%);
+    position: relative;
+}
+
+.chat-window::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(34,197,94,0.03)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23dots)"/></svg>');
+    pointer-events: none;
+}
+
+.message {
+    margin: 16px 0;
+    display: flex;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.bot {
+    justify-content: flex-start;
+}
+
+.bubble {
+    max-width: 70%;
+    padding: 16px 20px;
+    border-radius: 20px;
+    position: relative;
+    word-wrap: break-word;
+    font-size: 15px;
+    line-height: 1.5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: bubbleIn 0.3s ease-out;
+}
+
+@keyframes bubbleIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.message.user .bubble {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    color: white;
+    border-bottom-right-radius: 6px;
+}
+
+.message.bot .bubble {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    color: #1e293b;
+    border-bottom-left-radius: 6px;
+    border: 1px solid rgba(34, 197, 94, 0.1);
+}
+
+.typing-indicator {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 20px;
+    border-bottom-left-radius: 6px;
+    max-width: 70%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.1);
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 60%, 100% { transform: scale(1); opacity: 0.5; }
+    30% { transform: scale(1.2); opacity: 1; }
+}
+
+.input-area {
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid rgba(34, 197, 94, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.input-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: white;
+    border-radius: 16px;
+    padding: 4px;
+    box-shadow: 0 8px 32px rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.1);
+    transition: all 0.3s ease;
+}
+
+.input-container:focus-within {
+    box-shadow: 0 8px 32px rgba(34, 197, 94, 0.2);
+    border-color: #10b981;
+}
+
+.prompt-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 16px 20px;
+    font-size: 15px;
+    background: transparent;
+    color: #1e293b;
+    border-radius: 12px;
+}
+
+.prompt-input::placeholder {
+    color: #94a3b8;
+}
+
+.send-btn {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    color: white;
+    border: none;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+}
+
+.send-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+}
+
+.send-btn:active {
+    transform: translateY(0);
+}
+
+.send-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.welcome-message {
+    text-align: center;
+    color: #64748b;
+    font-size: 16px;
+    margin-top: 50px;
+    padding: 0 20px;
+}
+
+.floating-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 8s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Resize handles */
+.resize-handle {
+    position: absolute;
+    background: rgba(34, 197, 94, 0.3);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.resize-handle:hover {
+    background: rgba(34, 197, 94, 0.6);
+}
+
+.resize-handle.active {
+    background: rgba(34, 197, 94, 0.8);
+}
+
+.resize-handle.right {
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    cursor: e-resize;
+}
+
+.resize-handle.bottom {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    cursor: s-resize;
+}
+
+.resize-handle.bottom-right {
+    right: 0;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    cursor: se-resize;
+    border-radius: 4px 0 0 0;
+}
+
+.resize-handle.left {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    cursor: w-resize;
+}
+
+.resize-handle.top {
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 4px;
+    cursor: n-resize;
+}
+
+.resize-handle.top-left {
+    left: 0;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    cursor: nw-resize;
+    border-radius: 0 0 4px 0;
+}
+
+.resize-handle.top-right {
+    right: 0;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    cursor: ne-resize;
+    border-radius: 0 0 0 4px;
+}
+
+.resize-handle.bottom-left {
+    left: 0;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    cursor: sw-resize;
+    border-radius: 0 4px 0 0;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        width: calc(100vw - 20px);
+        height: calc(100vh - 20px);
+        min-width: 320px;
+        min-height: 400px;
+        border-radius: 16px;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        transform: none;
+    }
+
+    .header {
+        padding: 16px 20px;
+    }
+
+    .logo h1 {
+        font-size: 20px;
+    }
+
+    .controls {
+        gap: 8px;
+    }
+
+    .model-selector select, .mode-selector select {
+        padding: 6px 24px 6px 10px;
+        font-size: 13px;
+    }
+
+    .bubble {
+        max-width: 85%;
+    }
+
+    .resize-handle {
+        display: none;
+    }
+}
+.model-selector select,
+.mode-selector select {
+    background: linear-gradient(135deg, #4a90e2, #357ABD);
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s ease;
+    appearance: none; /* removes default arrow in some browsers */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    padding-right: 30px; /* space for arrow */
+}
+
+.model-selector select:hover,
+.mode-selector select:hover {
+    background: linear-gradient(135deg, #357ABD, #2a5a9e);
+}
+
+/* Custom dropdown arrow */
+.model-selector select::after,
+.mode-selector select::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+}
+
+/* Container relative so we can position the arrow */
+.model-selector, .mode-selector {
+    position: relative;
+    display: inline-block;
+    margin-right: 12px;
+}
+
+/* Custom arrow with CSS */
+.model-selector select {
+    background-image:
+      linear-gradient(45deg, transparent 50%, white 50%),
+      linear-gradient(135deg, white 50%, transparent 50%);
+    background-position:
+      calc(100% - 20px) calc(1em + 2px),
+      calc(100% - 15px) calc(1em + 2px);
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+}
+
+/* Fix small padding for select on Firefox */
+select::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+select {
+  border-radius: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(145deg, #f0f0f0, #cacaca);
+  border: 1px solid #bbb;
+  font-weight: 600;
+  cursor: pointer;
+}
+select:hover {
+  border-color: #888;
+}
+
+
