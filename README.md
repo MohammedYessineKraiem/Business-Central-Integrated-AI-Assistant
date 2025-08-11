@@ -19,6 +19,8 @@ An **end-to-end AI Copilot system** that transforms how users interact with Micr
 ### 1. **📋 Skip Processing Script** 
 The RAG processing script has already been executed - **DO NOT re-run it**
 
+### 1.2. **📋 Download the needed dataset under the label training_data.json and put it in the processing_data file under the rag directory** 
+HuggingFace link : 
 ### 2. **🔍 Validate Setup** 
 Run `setup_run` to check package validity and system configuration
 
@@ -1881,3 +1883,10 @@ For complete setup instructions and table structures, refer to the **full projec
 **Next Steps**: Continue with detailed documentation for each layer, starting with Models and Interfaces, then moving through DAOs, Services, DTOs, and finally Controllers.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+**Contributing**
+Fork the repository.
+Create a feature branch.
+Commit changes.
+Push and open a Pull Request.
+**License**
+MIT License. See LICENSE for details.
